@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# PROVIDE: jenkins
+# PROVIDE: devpowerd
 # REQUIRE: LOGIN
 # KEYWORD: shutdown
 
@@ -44,9 +44,9 @@ load_rc_config "${name}"
 pidfile=/var/run/devpowerd/devpowerd.pid
 command=/usr/sbin/daemon
 python_cmd="${devpowerd_python_home}/python3"
-proc_name="${python_cmd}"
+procname="${python_cmd}"
 command_args="-p ${pidfile} ${python_cmd} ${devpowerd_dir}/devpowerd.py ${devpowerd_port} >> ${devpowerd_log} 2>&1"
-required_file="${python_cmd} ${devpowerd_dir}/devpowerd.py"
+required_file="${python_cmd} ${devpowerd_dir}/devpowerd.py ${devpowerd_dir}/devpowerserial.py"
 
 start_precmd=devpowerd_prestart
 #start_cmd=devpowerd_start
