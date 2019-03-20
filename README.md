@@ -16,14 +16,16 @@ application to send the reqeuests (devpowerctl).
 ## Installation
 0. Program arduino (leonardo) with `ci_relay_controller.ino` and wire Arduino, relay module,  power supply and devices.
 
-1. Copy `devpowerd` into the `/usr/local/rc.d` folder.
+1. Clone this repository into `/usr/local/devpowerd`
 
-2. Create a symbolic link `/usr/local/bin/devpowerctl` to `devpowerctl.py`.
+2. Copy `devpowerd` into the `/usr/local/rc.d` folder.
 
-3. Set up conserver to contain consoles for `devpowerctl` (and any devices to be supported).
+3. Create a symbolic link `/usr/local/bin/devpowerctl` to `devpowerctl.py`.
+
+4. Set up conserver to contain consoles for `devpowerctl` (and any devices to be supported).
    See ["setting up arduino controller"](https://hackmd.io/WaraH18ZQK2LgxyFFQxJOA) for more info.
 
-4. Enable and start the server
+5. Enable and start the server
    ```sh
    sudo sysrc devpowerd_enable=YES
    sudo service devpowerd start
