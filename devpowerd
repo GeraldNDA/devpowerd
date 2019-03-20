@@ -1,0 +1,63 @@
+#!/bin/sh
+
+# PROVIDE: jenkins
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+# Configuration settings for devpowerd in /etc/rc.conf
+#
+# devpowerd_enable (bool):
+#   Set to "NO" by default.
+#   Set to YES to enable the devpowerd daemon.
+#
+# devpowerd_dir (str):
+#   Set to "/usr/local/devpowerd" by default.
+#   Set the path to find the devpowerd python script.
+#
+# devpowerd_python_home (str):
+#   Set to "/usr/local/bin" by default.
+#   Set the path to the "python3" executable.
+#
+# devpowerd_port (str):
+#   Set to "9009" by default.
+#   Set the port used to communicate with devpower calls.
+#
+# devpowerd_log (str):
+#   Set to "$devpowerd_dir/devpowerd.log" by default.
+#   Log file location.
+#
+
+. /etc/rc.subr
+
+name="devpowerd"
+desc="Device Power Controller Daemon"
+rcvar=${name}_enable
+
+load_rc_config "${name}"
+
+: ${devpowerd_enable:=NO}
+: ${devpowerd_dir:="/usr/local/devpowerd"}
+: ${devpowerd_python_home:="/usr/local/bin"}
+: ${devpowerd_port:=9009}
+: ${devpowerd_log:="${devpowerd_dir}/devpowerd.log"}
+
+pidfile=/var/run/devpowerd/devpowerd.pid
+command=/usr/sbin/daemon
+python_cmd="${devpowerd_python_home}/python3"
+proc_name="${python_cmd}"
+command_args="-p ${pidfile} ${python_cmd} ${devpowerd_dir}/devpowerd.py ${devpowerd_port} >> ${devpowerd_log} 2>&1"
+required_file="${python_cmd} ${devpowerd_dir}/devpowerd.py"
+
+start_precmd=devpowerd_prestart
+#start_cmd=devpowerd_start
+
+devpowerd_prestart () {
+	if [ ! -f "${devpowerd_log}" ]; then
+		install -m 640 /dev/null "${devpowerd_log}"
+	fi
+	if [ ! -d "/var/run/devpowerd" ]; then
+		install -d -m 750 "/var/run/devpowerd"
+	fi
+}
+
+run_rc_command "$1"
