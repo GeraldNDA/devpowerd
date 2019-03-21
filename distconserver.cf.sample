@@ -1,0 +1,37 @@
+default * {
+	master consolehost;
+	rw *;
+}
+
+default serial {
+	type device;
+	device /dev/cuaU?;
+	devicesubst ?=Pd;
+
+	baud 115200;
+	parity none;
+
+	# For the benefit of expect scripts
+	logfile /tmp/&.boot.log;
+	motd "[connected]";
+}
+
+default device serial {
+	include serial;
+	portbase 0;
+}
+
+default remote serial {
+	# Don't define anything, will be defined by master
+	type noop;
+}
+
+console devpowerctl { include remote serial; }
+console slot1 { aliases pinea64; include remote serial; }
+console slot2 { aliases beaglebone; include remote serial; }
+#console slot3 { aliases <device_name>; include remote serial; }
+#console slot4 { aliases <device_name>; include remote serial; }
+#console slot5 { aliases <device_name>; include remote serial; }
+#console slot6 { aliases <device_name>; include remote serial; }
+#console slot7 { aliases <device_name>; include remote serial; }
+#console slot8 { aliases <device_name>; include remote serial; }
