@@ -12,7 +12,10 @@ class ConsoleError(Exception):
     pass
 
 class ConsoleHandler(object):
-    SERIAL_HOST = "geraldnda"
+    # only needs to be included if conserver version is older than:
+    # https://github.com/conserver/conserver/commit/8cfbe1a
+    # NOTE: If SERIAL_HOST is to be used, it should be put in /etc/hosts or as a DNS alias
+    SERIAL_HOST = "consolehost"
     CMD_TIMEOUT = 60
     def __init__(self, device):
         self.console = spawn("/usr/local/bin/console -f devpowerctl",
@@ -22,9 +25,10 @@ class ConsoleHandler(object):
         self.slot_num = self.load_slot_num(device)
 
     def load_slot_num(self, device):
-        port_info, status = run(f"/usr/local/bin/console -M {ConsoleHandler.SERIAL_HOST} -x {device}", withexitstatus=True)
+        # port_info, status = run(f"/usr/local/bin/console -M {ConsoleHandler.SERIAL_HOST} -x {device}", withexitstatus=True)
+        port_info, status = run(f"/usr/local/bin/console -x {device}", withexitstatus=True)
         if status != 0:
-            raise ConsoleError(f"Couldn't get info for '{device} on {ConsoleHandler.SERIAL_HOST}. Full Response: {port_info}'")
+            raise ConsoleError(f"Couldn't get info for '{device}'. Full Response: {port_info}'")
         slot_name = r"slot(\d+)"
         device_path = r"/dev/cuaU\d+"
         hostname = r"[\w.]+"
