@@ -30,3 +30,9 @@ application to send the reqeuests (devpowerctl).
    sudo sysrc devpowerd_enable=YES
    sudo service devpowerd start
    ```
+ ## Additional Notes
+ Depends on `conserver>=8.2.4`. Otherwise `devpowerserial.py` should be modified to use the `-M <SERIAL_HOST>` option.
+ 
+ `localconserver.cf.sample` and `remoteconserver.cf.sample` are included to show what the conserver configurations are for the remote user (where devpowerd is being used) and the local user (where the serial connections are). If these are the same computer, than `localconserver.cf` is sufficient although the `access` block is unnecessary.
+ 
+ You can either change the hostname in the files to match your local environment or you can modify `/etc/hosts` or add a DNS alias instead.
