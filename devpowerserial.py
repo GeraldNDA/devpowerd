@@ -30,7 +30,7 @@ class ConsoleHandler(object):
         if status != 0:
             raise ConsoleError(f"Couldn't get info for '{device}'. Full Response: {port_info}'")
         slot_name = r"slot(\d+)"
-        device_path = r"/dev/cuaU\d+"
+        device_path = r"/dev/\w+"
         hostname = r"[\w.]+"
         baud_rate = r"\d+n"
         match = re.search(f"{slot_name}\\s+on\\s+{device_path}@{hostname}\\s+at\\s+{baud_rate}", port_info.decode(sys.stdout.encoding))

@@ -31,7 +31,7 @@ class PowerController():
     @staticmethod
     def get_devices():
         console_info = check_output(("/usr/local/bin/console", "-x"))
-        matches = finditer(r"\s+(slot\d+)\s+on\s+/dev/cuaU\d+", str(console_info))
+        matches = finditer(r"\s+(slot\d+)\s+on\s+/dev/\w+", str(console_info))
         return sorted(match.group(1) for match in matches)
 
     def __init__(self):
